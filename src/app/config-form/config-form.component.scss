@@ -1,0 +1,24 @@
+.config-form-card {
+  width: 100%;
+  padding: 16px;
+}
+
+.tech-header {
+  margin-bottom: 32px;
+}
+
+.config-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.entity {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  margin: 16px 0 16px 0;
+}
+
+.input-form {
+  width: 50%;
+}

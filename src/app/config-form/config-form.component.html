@@ -1,0 +1,64 @@
+<mat-card class="config-form-card">
+  <mat-card-header class="tech-header">
+    <mat-card-title>Technologies</mat-card-title>
+  </mat-card-header>
+  <form *ngIf="configForm !== undefined" [formGroup]="configForm" class="config-form">
+    <mat-form-field class="input-form">
+      <mat-select
+        placeholder="Frontend"
+        formControlName="frontendTech">
+        <mat-option *ngFor="let frontTech of frontendTechArray" [value]="frontTech.name">
+          {{ frontTech.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="input-form">
+      <mat-select
+        placeholder="Backend"
+        formControlName="backendTech">
+        <mat-option *ngFor="let backendTech of backendTechArray" [value]="backendTech.name">
+          {{ backendTech.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-card-header class="tech-header">
+      <mat-card-title>Entities</mat-card-title>
+    </mat-card-header>
+    <button mat-raised-button color="primary" (click)="addEntity()">Add entity</button>
+    <div formArrayName="entities">
+      <div *ngFor="let entity of entityForms.controls; let entityIndex = index">
+        <div [formGroupName]="entityIndex" class="entity">
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="Name"
+              formControlName="name">
+          </mat-form-field>
+          <!-- <button mat-raised-button color="warn" (click)="removeEntity(entityIndex)">Remove entity</button> -->
+          <div formArrayName="props">
+            <div *ngFor="let prop of getPropsForEntity(entityIndex).controls; let propIndex = index">
+              <div [formGroupName]="propIndex" class="entity">
+                <mat-form-field>
+                  <input
+                    matInput
+                    placeholder="Key"
+                    formControlName="key">
+                </mat-form-field>
+                <mat-form-field>
+                  <input
+                    matInput
+                    placeholder="Data type"
+                    formControlName="dataType">
+                </mat-form-field>
+                <mat-checkbox formControlName="nullable">Nullable</mat-checkbox>
+                <button mat-raised-button color="warn" (click)="removePropFromEntity(entityIndex, propIndex)">Remove prop</button>
+              </div>
+            </div>
+          </div>
+          <button mat-raised-button color="primary" (click)="addNewPropToEntity(entityIndex)">Add prop</button>
+          <button mat-raised-button color="warn" (click)="removeEntity(entityIndex)" style="margin-top: 16px;">Remove entity</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</mat-card>

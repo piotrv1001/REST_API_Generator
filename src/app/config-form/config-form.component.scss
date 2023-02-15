@@ -22,3 +22,28 @@
 .input-form {
   width: 50%;
 }
+
+.inline-btn {
+  width: max-content;
+}
+
+.prop-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.m-top-btn {
+  margin-bottom: 32px;
+}
+
+.tech-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  img {
+    margin-left: 8px;
+    height: 20px;
+  }
+}

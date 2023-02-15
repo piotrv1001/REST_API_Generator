@@ -1,14 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, FormControl, AbstractControl } from '@angular/forms';
 
-type entityConfig = {
-  name: string,
-  props: {
-    key: string,
-    dataType: string,
-    nullable: boolean
-  }
-};
+type DropdownOption = {
+  name: string;
+  imgUrl?: string
+}
 
 @Component({
   selector: 'app-config-form',
@@ -18,8 +14,9 @@ type entityConfig = {
 export class ConfigFormComponent implements OnInit {
 
   configForm?: FormGroup;
-  frontendTechArray: any[] = [];
-  backendTechArray: any[] = [];
+  frontendTechArray: DropdownOption[] = [];
+  backendTechArray: DropdownOption[] = [];
+  dataTypeArray: DropdownOption[] = [];
 
   constructor(private fb: FormBuilder) {}
 
@@ -30,15 +27,20 @@ export class ConfigFormComponent implements OnInit {
       entities: this.fb.array([])
     });
     this.frontendTechArray = [
-      { name: 'Angular' },
-      { name: 'React' },
-      { name: 'Vue' }
+      { name: 'Angular', imgUrl: '../../assets/images/angular_logo.svg.png' },
+      { name: 'React', imgUrl: '../../assets/images/react_logo.svg.png' },
+      { name: 'Vue', imgUrl: '../../assets/images/vue_logo.svg.png' }
     ];
     this.backendTechArray = [
-      { name: 'Express.js' },
-      { name: 'Spring Boot' },
-      { name: 'Django' },
-    ]
+      { name: 'Express.js', imgUrl: '../../assets/images/express_logo.png' },
+      { name: 'Spring Boot', imgUrl: '../../assets/images/spring_boot_logo.png' },
+      { name: 'Django', imgUrl: '../../assets/images/django_logo.svg.png' },
+    ];
+    this.dataTypeArray = [
+      { name: 'Number' },
+      { name: 'String' },
+      { name: 'Boolean' },
+    ];
   }
 
   get entityForms(): FormArray {
@@ -47,7 +49,7 @@ export class ConfigFormComponent implements OnInit {
 
   newEntity(): FormGroup {
     return this.fb.group({
-      name: '',
+      name: 'Entity',
       props: this.fb.array([])
     });
   }
@@ -78,6 +80,14 @@ export class ConfigFormComponent implements OnInit {
 
   removePropFromEntity(entityIndex: number, propIndex: number): void {
     this.getPropsForEntity(entityIndex).removeAt(propIndex);
+  }
+
+  getNameForEntity(index: number): string {
+    return this.entityForms.at(index).get('name')?.value;
+  }
+
+  clearEntityName(index: number): void {
+    this.entityForms.at(index).get('name')?.reset();
   }
 
 }

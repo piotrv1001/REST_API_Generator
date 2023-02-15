@@ -8,7 +8,10 @@
         placeholder="Frontend"
         formControlName="frontendTech">
         <mat-option *ngFor="let frontTech of frontendTechArray" [value]="frontTech.name">
-          {{ frontTech.name }}
+          <div class="tech-row">
+            <span>{{ frontTech.name }}</span>
+            <img [src]="frontTech.imgUrl">
+          </div>
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -17,27 +20,33 @@
         placeholder="Backend"
         formControlName="backendTech">
         <mat-option *ngFor="let backendTech of backendTechArray" [value]="backendTech.name">
-          {{ backendTech.name }}
+          <div class="tech-row">
+            <span>{{ backendTech.name }}</span>
+            <img [src]="backendTech.imgUrl">
+          </div>
         </mat-option>
       </mat-select>
     </mat-form-field>
+    <mat-divider></mat-divider>
     <mat-card-header class="tech-header">
       <mat-card-title>Entities</mat-card-title>
     </mat-card-header>
-    <button mat-raised-button color="primary" (click)="addEntity()">Add entity</button>
-    <div formArrayName="entities">
-      <div *ngFor="let entity of entityForms.controls; let entityIndex = index">
+    <button mat-raised-button color="primary" (click)="addEntity()" class="inline-btn m-top-btn">Add entity</button>
+    <mat-tab-group formArrayName="entities" animationDuration="0ms">
+      <mat-tab *ngFor="let entity of entityForms.controls; let entityIndex = index" [label]="getNameForEntity(entityIndex)">
         <div [formGroupName]="entityIndex" class="entity">
-          <mat-form-field>
+          <mat-form-field class="input-form">
             <input
               matInput
               placeholder="Name"
               formControlName="name">
+              <button *ngIf="getNameForEntity(entityIndex)" matSuffix mat-icon-button aria-label="Clear" (click)="clearEntityName(entityIndex)">
+                <mat-icon>close</mat-icon>
+              </button>
           </mat-form-field>
-          <!-- <button mat-raised-button color="warn" (click)="removeEntity(entityIndex)">Remove entity</button> -->
           <div formArrayName="props">
             <div *ngFor="let prop of getPropsForEntity(entityIndex).controls; let propIndex = index">
-              <div [formGroupName]="propIndex" class="entity">
+              <div [formGroupName]="propIndex" class="prop-group">
                 <mat-form-field>
                   <input
                     matInput
@@ -45,20 +54,23 @@
                     formControlName="key">
                 </mat-form-field>
                 <mat-form-field>
-                  <input
-                    matInput
+                  <mat-select
                     placeholder="Data type"
                     formControlName="dataType">
+                      <mat-option *ngFor="let dataType of dataTypeArray" [value]="dataType.name">
+                        {{ dataType.name }}
+                      </mat-option>
+                  </mat-select>
                 </mat-form-field>
                 <mat-checkbox formControlName="nullable">Nullable</mat-checkbox>
-                <button mat-raised-button color="warn" (click)="removePropFromEntity(entityIndex, propIndex)">Remove prop</button>
+                <button mat-raised-button color="warn" (click)="removePropFromEntity(entityIndex, propIndex)" class="inline-btn">Remove prop</button>
               </div>
             </div>
           </div>
-          <button mat-raised-button color="primary" (click)="addNewPropToEntity(entityIndex)">Add prop</button>
-          <button mat-raised-button color="warn" (click)="removeEntity(entityIndex)" style="margin-top: 16px;">Remove entity</button>
+          <button mat-raised-button color="primary" (click)="addNewPropToEntity(entityIndex)" class="inline-btn">Add prop</button>
+          <button mat-raised-button color="warn" (click)="removeEntity(entityIndex)" style="margin-top: 16px;" class="inline-btn">Remove entity</button>
         </div>
-      </div>
-    </div>
+      </mat-tab>
+    </mat-tab-group>
   </form>
 </mat-card>
